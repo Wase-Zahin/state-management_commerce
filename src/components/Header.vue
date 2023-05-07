@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <p>Logo</p>
+        <img :src="logo" class="logo">
         <div class="searchBarContainer">
             <input type="text" v-model="query" @input="search" placeholder="Search for products...">
             <IconEpSearch class="searchIcon" />
@@ -16,7 +16,7 @@
         <div class="navBar__BigScreen">
             <RouterLink to="shop">Shop</RouterLink>
             <RouterLink to="cart">
-                <IconEpCart />
+                <IconEpCart class="cartIcon" />
             </RouterLink>
         </div>
     </div>
@@ -32,6 +32,7 @@ import type { RouterLink } from 'vue-router';
 import IconEpFold from '~icons/ep/fold';
 import IconEpSearch from '~icons/ep/search';
 import IconEpCart from '~icons/ep/shopping-cart';
+import logo from '../assets/logo.png';
 
 const menu = ref(false);
 const query = ref('');
@@ -101,6 +102,11 @@ const search = () => {
     position: absolute;
     right: 4%;
     top: 18%;
+}
+
+.logo, .cartIcon {
+    height: 30px;
+    width: 30px;
 }
 
 a {
