@@ -1,4 +1,8 @@
 <template>
+    <div class="bannerBlogs">
+        <div class="banner"></div>
+        <div class="blogs"></div>
+    </div>
     <div id="shop">
         <div class="filterBar">
             <div class="category__smallScreen">
@@ -14,15 +18,19 @@
         </div>
 
         <div class="categoryImgDiv">
+
             <div class="category__bigScreen">
                 <h1>Catergories</h1>
+                <hr>
                 <div v-for="category in categories">
                     <!-- extract the selected category name from click and use it to display -->
                     <p @click="setCategory(category)">{{ category }}</p>
+                    <hr>
                 </div>
             </div>
 
             <div class="products">
+
                 <div class="productContainer" v-if="selectedCategory.length > 0" v-for="product in selectedCategory"
                     :key="product.id">
                     <RouterLink class="link" :to="{ name: 'product', params: { id: product.id } }">
@@ -30,16 +38,21 @@
                         <p>{{ product.title }}</p>
                     </RouterLink>
                 </div>
+
                 <div class="productContainer" v-else v-for="product__all in products" :key="product__all.id">
+
                     <RouterLink :to="{ name: 'product', params: { id: product__all.id } }">
                         <img class="productImg" :src="product__all.image">
                         <p>{{ product__all.title }}</p>
                     </RouterLink>
+
                     <div class="buttons">
                         <button>Buy now</button>
                         <button @click="addToCart(product__all.id)">Add to Cart</button>
                     </div>
+
                 </div>
+
             </div>
         </div>
     </div>
@@ -92,6 +105,13 @@ onMounted(async () => {
 </script>
   
 <style lang="scss">
+#shop {
+    background-color: #F0F0F0;
+    height: 100vh;
+    border: 1px solid black;
+    margin: 1rem;
+}
+
 .productImg {
     height: 150px;
     width: 150px;
@@ -117,8 +137,9 @@ onMounted(async () => {
 .categoryImgDiv {
     display: grid;
     grid-template-columns: 250px 1fr;
-    border: 1px solid black;
-    gap: 2rem;
+    align-self: center;
+    padding: 1rem;
+    background-color: white;
 
     @media (max-width: 620px) {
         grid-template-columns: auto;
@@ -126,12 +147,11 @@ onMounted(async () => {
 }
 
 .category__bigScreen {
-    display: flex;
-    flex-direction: column;
     text-align: center;
     height: fit-content;
-    background-color: lightgray;
-    border: 1px solid black;
+    outline: 0.5px solid gray;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px gray;
 
     @media (max-width: 620px) {
         display: none;
@@ -141,14 +161,13 @@ onMounted(async () => {
         font-weight: 200;
         padding: 1rem 0;
         width: 100%;
-        background-color: antiquewhite;
+        background-color: white;
     }
 
     p {
         font-size: 1.2rem;
-        border: 1px solid black;
         padding: 1rem 0;
-        background-color: antiquewhite;
+        background-color: white;
     }
 
     div {
@@ -167,16 +186,20 @@ onMounted(async () => {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 1rem;
 }
 
 .productContainer {
     display: flex;
     flex-direction: column;
-    width: 150px;
+    width: 200px;
     gap: 10px;
     border: 0.5px solid gray;
     padding: 1rem;
     justify-content: space-between;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px gray;
 
     a {
         color: black;
@@ -198,5 +221,20 @@ onMounted(async () => {
             cursor: pointer;
         }
     }
+}
+
+.bannerBlogs {
+    display: grid;
+    // grid-template-columns: 1fr 0.4fr;
+    grid-template-columns: auto;
+    height: 50vh;
+}
+
+.banner {
+    background-color: red;
+}
+
+.blogs {
+    background-color: green;
 }
 </style>

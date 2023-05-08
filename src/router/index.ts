@@ -2,13 +2,15 @@ import Cart from '@/components/Cart.vue';
 import Search from '@/components/Search.vue';
 import Shop from '@/components/Shop.vue';
 import ProductDetails from '@/components/ProductDetails.vue';
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
+import Checkout from '@/components/Checkout.vue';
+import Success from '@/components/Success.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
@@ -34,8 +36,18 @@ const router = createRouter({
       path: '/product:id',
       name: 'product',
       component: ProductDetails,
+    },
+    {
+      path: '/checkout',
+      name: 'checkout',
+      component: Checkout,
+    },
+    {
+      path: '/success',
+      name: 'success',
+      component: Success,
     }
   ]
 })
 
-export default router
+export default router;

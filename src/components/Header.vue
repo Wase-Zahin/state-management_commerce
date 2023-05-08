@@ -1,13 +1,18 @@
 <template>
     <div class="header">
-        <img :src="logo" class="logo">
+        <RouterLink to="home">
+            <img :src="logo" class="logo">
+        </RouterLink>
         <div class="searchBarContainer">
             <input type="text" v-model="query" @input="search" placeholder="Search for products...">
             <IconEpSearch class="searchIcon" />
-            <div v-for="product in filteredResults" :key="product.id">
-                <RouterLink :to="{ name: 'product', params: { id: product.id } }">
-                    <h3>{{ product.title }}</h3>
-                </RouterLink>
+            <div class="searchResults">
+                <div v-for="product in filteredResults" :key="product.id">
+                    <RouterLink :to="{ name: 'product', params: { id: product.id } }">
+                        <h3>{{ product.title }}</h3>
+                        <hr>
+                    </RouterLink>
+                </div>
             </div>
         </div>
         <IconEpFold @click="toggleMenu" class="menuIcon" />
@@ -44,6 +49,7 @@ const toggleMenu = () => {
 const filteredResults = computed(() => {
     return store.state.search.results;
 })
+
 const search = () => {
     store.dispatch('search/searchProducts', query.value);
 }
@@ -104,13 +110,27 @@ const search = () => {
     top: 18%;
 }
 
-.logo, .cartIcon {
+.logo,
+.cartIcon {
     height: 30px;
     width: 30px;
 }
 
+.searchResults {
+    // position: absolute;
+    top: 100%;
+    background-color: black;
+    width: 100%;
+    min-height: 100%;
+    outline: 1px solid lightgray;
+}
+
 a {
     text-decoration: none;
-    color: white;
+    color: wheat;
+
+    h3 {
+        padding: 16px;
+    }
 }
 </style>
