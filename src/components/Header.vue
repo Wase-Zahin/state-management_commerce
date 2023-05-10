@@ -3,9 +3,10 @@
         <RouterLink to="home">
             <img :src="logo" class="logo">
         </RouterLink>
-        <div class="searchBarContainer">
-            <input type="text" v-model="query" @input="search" placeholder="Search for products...">
-            <IconEpSearch class="searchIcon" />
+        <div class="searchBarContainer" :class="{'active': searchActive}">
+            <input type="text" v-model="query" @input="search" @focus="searchActive = true" @blur="searchActive = false" placeholder="Search for products...">
+            <p v-if="searchActive" class="searchIcon">cancel</p>
+            <IconEpSearch v-else class="searchIcon" />
             <div class="searchResults">
                 <div v-for="product in filteredResults" :key="product.id">
                     <RouterLink :to="{ name: 'product', params: { id: product.id } }">
@@ -41,6 +42,7 @@ import logo from '../assets/logo.png';
 
 const menu = ref(false);
 const query = ref('');
+const searchActive = ref(false);
 
 const toggleMenu = () => {
     menu.value = !menu.value;
@@ -96,11 +98,17 @@ const search = () => {
 
 .searchBarContainer {
     position: relative;
-
+    transition: all 0.5s ease-in-out;
     input {
         padding: 6px 3px;
         padding-left: 10px;
         border-radius: 15px;
+        width: 100%;
+        height: 100%;
+    }
+
+    &.active {
+      width: 100%;
     }
 }
 

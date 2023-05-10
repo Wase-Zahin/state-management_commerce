@@ -1,58 +1,64 @@
 <template>
-    <div class="bannerBlogs">
-        <div class="banner"></div>
-        <div class="blogs"></div>
-    </div>
+    <el-carousel class="carouselContainer" arrow="always" indicator-position="none">
+        <el-carousel-item v-for="product in filteredProducts" :key="product.id" class="banner">
+            <img :src="product.image">
+        </el-carousel-item>
+    </el-carousel>
+    <hr>
+
     <div id="shop">
-        <div class="filterBar">
-            <div class="category__smallScreen">
-                <select class="selectBox">
-                    <option value="category" selected>Category</option>
-                    <option value=""></option>
-                    <option value=""></option>
-                </select>
-            </div>
-            <div class="filter">
-                <p>sort by:</p>
+        <div class="category__bigScreen">
+            <h1>Catergories</h1>
+            <hr>
+            <div v-for="category in categories">
+                <!-- extract the selected category name from click and use it to display -->
+                <p @click="setCategory(category)">{{ category }}</p>
+                <hr>
             </div>
         </div>
-
-        <div class="categoryImgDiv">
-
-            <div class="category__bigScreen">
-                <h1>Catergories</h1>
-                <hr>
-                <div v-for="category in categories">
-                    <!-- extract the selected category name from click and use it to display -->
-                    <p @click="setCategory(category)">{{ category }}</p>
-                    <hr>
+        <div class="main">
+            <div class="filterBar">
+                <div class="category__smallScreen">
+                    <select class="selectBox">
+                        <option value="category" selected>Category</option>
+                        <option value=""></option>
+                        <option value=""></option>
+                    </select>
+                </div>
+                <div class="filter">
+                    <p>sort by:</p>
                 </div>
             </div>
 
-            <div class="products">
+            <div class="categoryImgDiv">
 
-                <div class="productContainer" v-if="selectedCategory.length > 0" v-for="product in selectedCategory"
-                    :key="product.id">
-                    <RouterLink class="link" :to="{ name: 'product', params: { id: product.id } }">
-                        <img class="productImg" :src="product.image">
-                        <p>{{ product.title }}</p>
-                    </RouterLink>
-                </div>
 
-                <div class="productContainer" v-else v-for="product__all in products" :key="product__all.id">
 
-                    <RouterLink :to="{ name: 'product', params: { id: product__all.id } }">
-                        <img class="productImg" :src="product__all.image">
-                        <p>{{ product__all.title }}</p>
-                    </RouterLink>
+                <div class="products">
 
-                    <div class="buttons">
-                        <button>Buy now</button>
-                        <button @click="addToCart(product__all.id)">Add to Cart</button>
+                    <div class="productContainer" v-if="selectedCategory.length > 0" v-for="product in selectedCategory"
+                        :key="product.id">
+                        <RouterLink class="link" :to="{ name: 'product', params: { id: product.id } }">
+                            <img class="productImg" :src="product.image">
+                            <p>{{ product.title }}</p>
+                        </RouterLink>
+                    </div>
+
+                    <div class="productContainer" v-else v-for="product__all in products" :key="product__all.id">
+
+                        <RouterLink :to="{ name: 'product', params: { id: product__all.id } }">
+                            <img class="productImg" :src="product__all.image">
+                            <p>{{ product__all.title }}</p>
+                        </RouterLink>
+
+                        <div class="buttons">
+                            <button>Buy now</button>
+                            <button @click="addToCart(product__all.id)">Add to Cart</button>
+                        </div>
+
                     </div>
 
                 </div>
-
             </div>
         </div>
     </div>
@@ -63,6 +69,7 @@ import { computed, onMounted } from 'vue';
 import { useStore } from '../store/index';
 import type { Product } from '../store/products';
 import { RouterLink } from 'vue-router';
+import { ElCarousel, ElCarouselItem } from 'element-plus';
 
 // variables
 const store = useStore();
@@ -89,6 +96,17 @@ const addToCart = (id: number) => {
     console.log(store.state.cart.cart)
 }
 
+const filteredProducts = computed(() => {
+    const filteredProducts: Product[] = [];
+    products.value.forEach((product) => {
+        if (filteredProducts.length < 6) {
+            filteredProducts.push(product);
+        }
+    })
+    console.log(filteredProducts);
+    return filteredProducts;
+})
+
 // extract the category names
 const categories = computed(() => {
     const uniqueCategories = new Set<string>();
@@ -105,11 +123,10 @@ onMounted(async () => {
 </script>
   
 <style lang="scss">
-#shop {
+main {
     background-color: #F0F0F0;
     height: 100vh;
     border: 1px solid black;
-    margin: 1rem;
 }
 
 .productImg {
@@ -134,10 +151,14 @@ onMounted(async () => {
     padding: 0.3rem 1rem;
 }
 
+#shop {
+    display: flex;
+    margin: 1rem;
+    gap: 1rem;
+}
+
 .categoryImgDiv {
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    align-self: center;
+    border: 1px solid black;
     padding: 1rem;
     background-color: white;
 
@@ -151,9 +172,10 @@ onMounted(async () => {
     height: fit-content;
     outline: 0.5px solid gray;
     border-radius: 10px;
+    width: 100%;
     box-shadow: 2px 2px 5px gray;
 
-    @media (max-width: 620px) {
+    @media (max-width: 1100px) {
         display: none;
     }
 
@@ -223,18 +245,20 @@ onMounted(async () => {
     }
 }
 
-.bannerBlogs {
-    display: grid;
-    // grid-template-columns: 1fr 0.4fr;
-    grid-template-columns: auto;
-    height: 50vh;
-}
+.carouselContainer {
+    height: 100%;
+    padding: 5rem 0;
 
-.banner {
-    background-color: red;
-}
+    .banner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-.blogs {
-    background-color: green;
+        img {
+            object-fit: cover;
+            max-width: 100%;
+            height: 100%;
+        }
+    }
 }
 </style>

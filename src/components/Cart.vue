@@ -21,32 +21,35 @@
     </div>
 
     <div class="cartItem__bigScreen">
-        <div class="headers">
+        <div class="item">
             <p>Item</p>
-            <p>Price</p>
-            <p>Quantity</p>
-            <p>Total</p>
-        </div>
-
-        <div v-for="product in cart" :key="product.id">
-
-            <div class="productInfo__bigScreen">
-                <div class="item">
-                    <img class="productImg" :src="product.image">
-                </div>
-                <div class="price">
-                    <p>${{ product.price }}</p>
-                </div>
-                <div class="quantity">
-                    <p>{{ product.counter }}</p>
-                </div>
-                <div class="Total">
-                    <p>${{ product.price * product.counter }}</p>
-                </div>
+            <div v-for="product in cart" :key="product.id">
+                <img class="productImg" :src="product.image">
             </div>
-
-            <div @click="remove(product.id)" class="removeItem">x</div>
         </div>
+
+        <div class="price">
+            <p>Price</p>
+            <div v-for="product in cart" :key="product.id">
+                <p>{{ product.price }}</p>
+            </div>
+        </div>
+
+        <div class="quantity">
+            <p>Quantity</p>
+            <div v-for="product in cart" :key="product.id">
+                <p>{{ product.counter }}</p>
+            </div>
+        </div>
+
+        <div class="total">
+            <p>Total</p>
+            <div v-for="product in cart" :key="product.id">
+                <p>{{ product.counter * product.price }}</p>
+                <!-- <div @click="remove(product.id)" class="removeItem">x</div> -->
+            </div>
+        </div>
+        <div class="line"></div>
     </div>
 
 
@@ -173,23 +176,36 @@ const remove = (id: number) => {
     @media (min-width: 768px) {
         display: none;
     }
+
+
 }
 
 .cartItem__bigScreen {
-    .productInfo__bigScreen {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        width: 100%;
-    }
-
-    .headers {
-        display: flex;
-        justify-content: space-around;
-        text-align: center;
-    }
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    position: relative;
 
     @media (max-width: 768px) {
         display: none;
+    }
+
+    .price,
+    .item,
+    .quantity,
+    .total {
+        display: grid;
+        justify-items: center;
+    }
+
+    .item {
+        gap: 2.5rem;
+    }
+
+    .line {
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        background-color: black;
     }
 }</style>

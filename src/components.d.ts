@@ -11,6 +11,8 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Cart: typeof import('./components/Cart.vue')['default']
     Checkout: typeof import('./components/Checkout.vue')['default']
+    ElCarousel: typeof import('element-plus/es')['ElCarousel']
+    ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
     Header: typeof import('./components/Header.vue')['default']
     Home: typeof import('./components/Home.vue')['default']
     ProductDetails: typeof import('./components/ProductDetails.vue')['default']
